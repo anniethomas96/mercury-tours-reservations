@@ -73,15 +73,15 @@ public class BaseSetup {
 
     //Create selenium webdriver for required browser(chrome).
     public WebDriver setBrowserDriver(){
-        //System.setProperty("webdriver.gecko.driver", getToolsPath() + "\\geckodriver.exe");
-        //WebDriver driver = new FirefoxDriver();
-        //logger.info("Firefox browser driver created");
+//        System.setProperty("webdriver.gecko.driver", getToolsPath() + "\\geckodriver.exe");
+//        WebDriver driver = new FirefoxDriver();
+//        logger.info("Firefox browser driver created");
 
         System.setProperty("webdriver.chrome.driver", getToolsPath() + "\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         logger.info("Chrome browser driver created");
-
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+//    driver.manage().timeouts().pageLoadTimeout(20,TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 
         return driver;
     }

@@ -16,6 +16,59 @@ public class FlightSummaryPage extends BaseSetup {
         this.driver = driver;
     }
 
+    public String getDepartureFlightRoute(){
+        return driver.findElement(By.xpath("//font[contains(text(),'Summary')]/following::table//tr[1]/td[1]")).getText();
+    }
+
+    public String getDepartureFlightDate(){
+        return driver.findElement(By.xpath("//font[contains(text(),'Summary')]/following::table//tr[1]/td[2]")).getText();
+    }
+
+    public String getDepartureFlightName(){
+        return driver.findElement(By.xpath("//font[contains(text(),'Summary')]/following::table//tr[3]/td[1]")).getText();
+    }
+
+    public String getDepartureFlightClass(){
+        return driver.findElement(By.xpath("//font[contains(text(),'Summary')]/following::table//tr[3]/td[2]")).getText();
+    }
+
+    public String getDepartureFlightCost(){
+        return driver.findElement(By.xpath("//font[contains(text(),'Summary')]/following::table//tr[3]/td[3]")).getText();
+    }
+
+
+    public String getReturnFlightRoute(){
+        return driver.findElement(By.xpath("//font[contains(text(),'Summary')]/following::table//tr[4]/td[1]")).getText();
+    }
+
+    public String getReturnFlightDate(){
+        return driver.findElement(By.xpath("//font[contains(text(),'Summary')]/following::table//tr[4]/td[2]")).getText();
+    }
+
+    public String getReturnFlightName(){
+        return driver.findElement(By.xpath("//font[contains(text(),'Summary')]/following::table//tr[6]/td[1]")).getText();
+    }
+
+    public String getReturnFlightClass(){
+        return driver.findElement(By.xpath("//font[contains(text(),'Summary')]/following::table//tr[6]/td[2]")).getText();
+    }
+
+    public String getReturnFlightCost(){
+        return driver.findElement(By.xpath("//font[contains(text(),'Summary')]/following::table//tr[6]/td[3]")).getText();
+    }
+
+    public String getFlightPassengerCount(){
+        return driver.findElement(By.xpath("//font[contains(text(),'Summary')]/following::table//tr[7]/td[2]")).getText();
+    }
+
+    public String getFlightTaxes(){
+        return driver.findElement(By.xpath("//font[contains(text(),'Summary')]/following::table//tr[8]/td[2]")).getText();
+    }
+
+    public String getFlightTotalPriceIncludingTaxes(){
+        return driver.findElement(By.xpath("//font[contains(text(),'Summary')]/following::table//tr[9]/td[2]")).getText();
+    }
+
     public void setPassengerDetail(int passengerNo, String name, String meal){
         String xpathFirstName = "//input[@name='passFirst" + (passengerNo-1) + "']";
         String xpathLastName = "//input[@name='passLast" + (passengerNo-1) + "']";

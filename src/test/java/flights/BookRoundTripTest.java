@@ -67,7 +67,7 @@ public class BookRoundTripTest extends BaseSetup {
 
 
         mercuryHome.toursLogIn(getUserName(),getPassword());
-        Thread.sleep(5000);
+        Thread.sleep(15000);
         flightPage.setFlightDetails(1,fromLocation, fromDate, toLocation, toDate);
         flightPage.setFlightPreferences("First Class","No Preference");
         flightPage.submit();
@@ -79,6 +79,32 @@ public class BookRoundTripTest extends BaseSetup {
         String ret_time = selectFlight.getReturnFlightTime(retFlightName);
         selectFlight.submit();
         Thread.sleep(3000);
+
+        String deptext = changeDateFormat(fromDate,"d-MMMM-yyyy","M/d/YYYY");
+        String rettext = changeDateFormat(toDate,"d-MMMM-yyyy","M/d/YYYY");
+
+        Assert.assertThat("Departing Flight Summary : check route",flightSummary.getDepartureFlightRoute(),
+                containsString(fromLocation + " to " + toLocation));
+        Assert.assertThat("Departing Flight Summary : check date",flightSummary.getDepartureFlightDate(),
+                containsString(deptext));
+        Assert.assertThat("Departing Flight Summary : check flight name",flightSummary.getDepartureFlightName(),
+                containsString(depFlightName));
+        Assert.assertThat("Departing Flight Summary : check class",flightSummary.getDepartureFlightClass(),
+                containsString("First"));
+
+        Assert.assertThat("Return Flight Summary : check route",flightSummary.getReturnFlightRoute(),
+                containsString(toLocation + " to " + fromLocation));
+        Assert.assertThat("Return Flight Summary : check date",flightSummary.getReturnFlightDate(),
+                containsString(rettext));
+        Assert.assertThat("Return Flight Summary : check flight name",flightSummary.getReturnFlightName(),
+                containsString(retFlightName));
+        Assert.assertThat("Return Flight Summary : check class",flightSummary.getReturnFlightClass(),
+                containsString("First"));
+
+
+        String taxes = flightSummary.getFlightTaxes();
+        String totalprice = flightSummary.getFlightTotalPriceIncludingTaxes();
+
         flightSummary.setPassengerDetail(1, "Ariana Grande", "No preference");
 //        flightSummary.setPassengerDetail(2, "Jennifer Lopez", "No preference");
         flightSummary.setPaymentDetails("MasterCard", "1235 5689 12234", "12 2010", billerName );
@@ -95,7 +121,7 @@ public class BookRoundTripTest extends BaseSetup {
                 containsString(fromLocation + " to " + toLocation));
         Assert.assertThat("Departing Flight : check flight class",depDetails,
                 containsString("First"));
-        String deptext = changeDateFormat(fromDate,"d-MMMM-yyyy","M/d/YYYY");
+
         deptext = deptext + " @ " + dep_time + " w/ " + depFlightName;
         logger.info(deptext);
         Assert.assertThat("Departing Flight : check flight cost",depDetails,
@@ -111,7 +137,7 @@ public class BookRoundTripTest extends BaseSetup {
                 containsString(toLocation + " to " + fromLocation));
         Assert.assertThat("Return Flight : check flight class",retDetails,
                 containsString("First"));
-        String rettext = changeDateFormat(toDate,"d-MMMM-yyyy","M/d/YYYY");
+
         rettext = rettext + " @ " + ret_time + " w/ " + retFlightName;
         logger.info(rettext);
         Assert.assertThat("Return Flight : check flight cost",retDetails,
@@ -147,6 +173,11 @@ public class BookRoundTripTest extends BaseSetup {
         Assert.assertThat("Delivery Address - city, state. zipcode",delivery,
                 containsString(city + ", " + state + ", " + zipcode));
 
+//verify taxes and total price is same as in summary page
+        Assert.assertThat("Total Taxes",flightConfirmation.getTotalTaxes(),
+                containsString(taxes));
+        Assert.assertThat("Total Price including Taxes",flightConfirmation.getTotalPrice(),
+                containsString(totalprice));
 
     }
 }

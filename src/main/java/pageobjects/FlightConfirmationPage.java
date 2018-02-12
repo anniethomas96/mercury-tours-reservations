@@ -31,15 +31,15 @@ public class FlightConfirmationPage extends BaseSetup{
     }
 
     public String getBillingAddressDetails(){
-        return driver.findElement(By.xpath("//font[contains(text(),'Billed To')]/following::tr")).getText();
+        return driver.findElement(By.xpath("//b[contains(text(),'Billed To')]/following::tr")).getText();
     }
 
     public String getDeliveryAddressDetails(){
-        return driver.findElement(By.xpath("//font[contains(text(),'Billed To')]/following::tr")).getText();
+        return driver.findElement(By.xpath("//b[contains(text(),'Delivery Address')]/following::tr")).getText();
     }
 
     public String getDeliveryAddressHeader(){
-        return driver.findElement(By.xpath("//font[contains(text(),'Billed To')]")).getText();
+        return driver.findElement(By.xpath("//b[contains(text(),'Delivery Address')]")).getText();
     }
 
     public String getTotalTaxes(){
