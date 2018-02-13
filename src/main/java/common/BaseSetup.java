@@ -2,6 +2,7 @@ package common;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -80,10 +81,28 @@ public class BaseSetup {
         System.setProperty("webdriver.chrome.driver", getToolsPath() + "\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         logger.info("Chrome browser driver created");
-//    driver.manage().timeouts().pageLoadTimeout(20,TimeUnit.SECONDS);
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 
         return driver;
+    }
+
+    //method to check if a text is present in the page
+    //parameters(1) - String - string to be searched
+    //output - Boolean - true if text found. false if not
+    public Boolean checkTextPresentInPage(String searchFor){
+        String body = driver.findElement(By.xpath("//body")).getText().replace(" ","").replace("\n","");
+        searchFor = searchFor.replace(" ","").replace("\n","");
+        if (body.contains(searchFor)){
+            return true;
+        }
+        return false;
+    }
+
+    //method to retrieve page title
+    //output - String - page title
+    public String getPageTitle(){
+        String title = driver.getTitle();
+        logger.debug("page title is [" + title + "]");
+        return title;
     }
 
 }
