@@ -117,7 +117,7 @@ public class SelectFlightPage extends BaseSetup {
         int rowno = getWebTableRowNoWithRowText(depTablexpath,flightName.value());
         if (rowno > 0){
             String depFlightTime = driver.findElement(By.xpath(depTablexpath + "//tr[" + (rowno-1) + "]/td[3]")).getText();
-            logger.debug("departure flight time is :" + depFlightTime);
+            logger.debug("departure flight time is " + depFlightTime);
             return depFlightTime;
         } else {
             logger.error("could not find departure flight name in the list [" + flightName.value() + "]");
@@ -133,7 +133,7 @@ public class SelectFlightPage extends BaseSetup {
         if (rowno > 0){
             String cost = driver.findElement(By.xpath(depTablexpath + "//tr[" + (rowno) + "]/td[1]")).getText();
             cost = cost.substring(cost.indexOf('$'),(cost.indexOf('(')-1));
-            logger.info("departure flight cost is " + cost);
+            logger.debug("departure flight cost is " + cost);
             return cost;
         } else {
             logger.error("could not find departure flight name in the list [" + flightName.value() + "]");
@@ -148,7 +148,7 @@ public class SelectFlightPage extends BaseSetup {
         int rowno = getWebTableRowNoWithRowText(retTablexpath,flightName.value());
         if (rowno > 0){
             String retFlightTime = driver.findElement(By.xpath(retTablexpath + "//tr[" + (rowno-1) + "]/td[3]")).getText();
-            logger.info("time is :" + retFlightTime);
+            logger.debug("time is " + retFlightTime);
             return retFlightTime;
         } else {
             logger.error("could not find return flight name in the list [" + flightName.value() + "]");
@@ -164,7 +164,7 @@ public class SelectFlightPage extends BaseSetup {
         if (rowno > 0){
             String cost = driver.findElement(By.xpath(retTablexpath + "//tr[" + (rowno) + "]/td[1]")).getText();
             cost = cost.substring(cost.indexOf('$'),(cost.indexOf('(')-1));
-            logger.info("return flight cost is :" + cost);
+            logger.debug("return flight cost is " + cost);
             return cost;
         } else {
             logger.error("could not find return flight name in the list [" + flightName.value() + "]");
