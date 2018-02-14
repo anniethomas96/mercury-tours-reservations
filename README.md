@@ -37,13 +37,15 @@ Failing test - OneWayTripTest (failing test as one way radio button setting is n
 6. set build name e.g.build=0.1
 
 
-#### Logger ####
+## Logger 
+
 Currently the log level is set to *INFO* and to console. Update log4j2.xml to modify the log level and location
 surefire-plugin report sample (for failing test)
 -----------------------------------------------
 check file in github 'Report TEST-flights.OneWayTripTest.xml'
-Sample BookRoundTripTest log (since only info is logged, and there are no errors, the log is basic)
----------------------------------------------------------------------------------------------------
+
+sample BookRoundTripTest log (since only info is logged, and there are no errors, the log is basic)
+
 12:51:07.695 [main] INFO  flights.BookRoundTripTest - Starting test: BookRoundTrip_FirstClass_SinglePassenger_TicketlessTravel
 Starting ChromeDriver 2.35.528161 (5b82f2d2aae0ca24b877009200ced9065a772e73) on port 45199
 Only local connections are allowed.
@@ -51,8 +53,8 @@ Feb 14, 2018 12:51:17 PM org.openqa.selenium.remote.ProtocolHandshake createSess
 INFO: Detected dialect: OSS
 12:51:40.230 [main] INFO  flights.BookRoundTripTest - Completed successfully test: BookRoundTrip_FirstClass_SinglePassenger_TicketlessTravel
 
-Sample OneWayTripTest log
--------------------------
+sample OneWayTripTest log
+
 12:51:41.085 [main] INFO  flights.BookRoundTripTest - Starting test: OneWayTrip_EconomyClass_SinglePassenger_TicketlessTravel
 Starting ChromeDriver 2.35.528161 (5b82f2d2aae0ca24b877009200ced9065a772e73) on port 46208
 Only local connections are allowed.
