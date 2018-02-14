@@ -24,7 +24,7 @@ Failing test - OneWayTripTest (failing test as one way radio button setting is n
 5. Open project in IDE as a maven project. All dependencies will be downloaded if there is connection to the internet.
 6. Update setup.properties file if required
 7. Reporting is set to INFO and to console. Update log4j2.xml is this needs to be changed.
-8. Run tests from the IDE itself. (mvn test should also work)
+8. Run tests from the IDE or from command promt using 'mvn test'. Running with maven will generate surefire report xmls.
 
 
 ### setup.properties ###
