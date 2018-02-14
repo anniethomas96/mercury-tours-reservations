@@ -39,3 +39,30 @@ Failing test - OneWayTripTest (failing test as one way radio button setting is n
 
 #### Logger ####
 Currently the log level is set to *INFO* and to console. Update log4j2.xml to modify the log level and location
+
+Sample BookRoundTripTest log (since only info is logged, and there are no errors, the log is basic)
+---------------------------------------------------------------------------------------------------
+12:51:07.695 [main] INFO  flights.BookRoundTripTest - Starting test: BookRoundTrip_FirstClass_SinglePassenger_TicketlessTravel
+Starting ChromeDriver 2.35.528161 (5b82f2d2aae0ca24b877009200ced9065a772e73) on port 45199
+Only local connections are allowed.
+Feb 14, 2018 12:51:17 PM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+12:51:40.230 [main] INFO  flights.BookRoundTripTest - Completed successfully test: BookRoundTrip_FirstClass_SinglePassenger_TicketlessTravel
+
+Sample OneWayTripTest log
+-------------------------
+12:51:41.085 [main] INFO  flights.BookRoundTripTest - Starting test: OneWayTrip_EconomyClass_SinglePassenger_TicketlessTravel
+Starting ChromeDriver 2.35.528161 (5b82f2d2aae0ca24b877009200ced9065a772e73) on port 46208
+Only local connections are allowed.
+Feb 14, 2018 12:51:44 PM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+12:51:52.901 [main] ERROR pageobjects.FlightFinderPage - Return date field selection is displayed. One way trip should not display Return date
+12:51:52.903 [main] ERROR flights.BookRoundTripTest - Fail - Please check exception generated for test [OneWayTrip_EconomyClass_SinglePassenger_TicketlessTravel]
+12:51:53.408 [main] INFO  common.BaseSetup - Screenshot [screenshot-OneWayTrip_EconomyClass_SinglePassenger_TicketlessTravel6195.png] captured
+
+java.lang.Exception: return date fields are displayed for one way trip
+
+	at pageobjects.FlightFinderPage.setOneWayTripFlightDetails(FlightFinderPage.java:203)
++	at flights.OneWayTripTest.OneWayTrip_EconomyClass_SinglePassenger_TicketlessTravel(OneWayTripTest.java:76)
+	at org.junit.rules.TestWatcher$1.evaluate(TestWatcher.java:55)
++    at org.junit.rules.RunRules.evaluate(RunRules.java:20)

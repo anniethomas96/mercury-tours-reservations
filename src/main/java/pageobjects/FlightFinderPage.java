@@ -199,7 +199,7 @@ public class FlightFinderPage extends BaseSetup {
         setFlighArrivalLocation(toLocation);
         logger.debug("one way trip flight details entered");
         if (checkFlightToMonthDisplayed()  || checkFlightToDayDisplayed() ) {
-            logger.error("Return date field selection is displayed. One way trip should not display Return date");
+            logger.error("return date field selection is displayed. one way trip should not display Return date");
             throw new Exception("return date fields are displayed for one way trip");
         }
     }
