@@ -40,9 +40,8 @@ Failing test - OneWayTripTest (failing test as one way radio button setting is n
 ## Logger 
 
 Currently the log level is set to *INFO* and to console. Update log4j2.xml to modify the log level and location
-surefire-plugin report sample (for failing test)
------------------------------------------------
-check file in github 'Report TEST-flights.OneWayTripTest.xml'
+
+surefire-plugin report sample (for failing test) ==> check file in github 'Report TEST-flights.OneWayTripTest.xml'
 
 sample BookRoundTripTest log (since only info is logged, and there are no errors, the log is basic)
 
