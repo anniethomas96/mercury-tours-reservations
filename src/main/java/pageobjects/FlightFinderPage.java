@@ -123,6 +123,13 @@ public class FlightFinderPage extends BaseSetup {
         logger.debug("set flight to month as [" + month +"] and date as [" + day +"]");
     }
 
+    private Boolean checkFlightToMonthDisplayed(){
+        return driver.findElement(oReturnToMonth).isDisplayed();
+    }
+
+    private Boolean checkFlightToDayDisplayed(){
+        return driver.findElement(oReturnToDay).isDisplayed();
+    }
     //method to set passenger count
     //parameters(1) - int - number of passengers in booking
     private void setPassengersCount(int passengers){
@@ -161,24 +168,7 @@ public class FlightFinderPage extends BaseSetup {
         locationSelect.findElement(By.cssSelector("option[value='" + loc.value() + "']")).click();
     }
 
-    //exposed method to book a round trip flight
-    //parameters(1) - int - passenger count (allowed is 1 to 4)
-    //parameters(2) - String - departure location
-    //parameters(3) - String - departure date
-    //parameters(4) - String - arrival location
-    //parameters(5) - String - return date
-    public void setRoundTripFlightDetails(int passengers, String fromLocation, String fromDate, String toLocation, String toDate) throws ParseException {
-//        waitForPageToLoad();
-//        setFlightType("Round Trip");
-//        setPassengersCount(passengers);
-//        setFlighDepartureLocation(fromLocation);
-//        setFlightFromDate(fromDate);
-//        setFlighArrivalLocation(toLocation);
-//        setFlightToDate(toDate);
-//        logger.debug("round trip flight details entered");
-    }
-
-    //exposed method to book a round trip flight
+     //exposed method to book a round trip flight
     //parameters(1) - int - passenger count (allowed is 1 to 4)
     //parameters(2) - Enum Location - departure location
     //parameters(3) - String - departure date
@@ -195,6 +185,24 @@ public class FlightFinderPage extends BaseSetup {
         logger.debug("round trip flight details entered");
     }
 
+    //exposed method to book a one way trip flight. if return date fields are displayed there is an error generated
+    //parameters(1) - int - passenger count (allowed is 1 to 4)
+    //parameters(2) - Enum Location - departure location
+    //parameters(3) - String - departure date
+    //parameters(4) - Enum Location - arrival location
+    public void setOneWayTripFlightDetails(int passengers, Location fromLocation, String fromDate, Location toLocation) throws Exception {
+        waitForPageToLoad();
+        setFlightType("One Way");
+        setPassengersCount(passengers);
+        setFlighDepartureLocation(fromLocation);
+        setFlightFromDate(fromDate);
+        setFlighArrivalLocation(toLocation);
+        logger.debug("one way trip flight details entered");
+        if (checkFlightToMonthDisplayed()  || checkFlightToDayDisplayed() ) {
+            logger.error("Return date field selection is displayed. One way trip should not display Return date");
+            throw new Exception("return date fields are displayed for one way trip");
+        }
+    }
 
     //method to click on continue button
     public void submit(){

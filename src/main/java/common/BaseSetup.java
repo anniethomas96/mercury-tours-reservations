@@ -2,16 +2,17 @@ package common;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hamcrest.core.IsNull;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 public class BaseSetup {
@@ -38,50 +39,66 @@ public class BaseSetup {
 
     //Get application URL from properties file
     public String getURL()  {
-        try{ //try moving to constructor
-            setupProp.load(new FileInputStream(propertiesPath));
-        } catch (FileNotFoundException e){
-            logger.info("the properties file does not exist - " + propertiesPath);
-        } catch (IOException e){
-            logger.info("the properties file needs to be checked - " + propertiesPath);
-        }
-        return setupProp.getProperty("url");
+        return  getPropertyValue("url");
     }
 
     //Get username from the properties file
     public String getUserName()  {
-        try{ //try moving to constructor
-            setupProp.load(new FileInputStream(propertiesPath));
-        } catch (FileNotFoundException e){
-            logger.info("the properties file does not exist - " + propertiesPath);
-        } catch (IOException e){
-            logger.info("the properties file needs to be checked - " + propertiesPath);
-        }
-        return setupProp.getProperty("username");
+        return  getPropertyValue("username");
     }
 
     //Get password from the properties file
     public String getPassword()  {
-        try{ //try moving to constructor
+        return  getPropertyValue("password");
+    }
+
+    //Get build id from the properties file
+    private String getBuildID()  {
+        String build =getPropertyValue("build");
+        logger.debug("build id is [" + build + "]");
+        if (build == null){ build="temp"; }
+        return  build;
+    }
+
+    //Get test browser from properties file
+    public String getBrowser()  {
+        return  getPropertyValue("browser");
+    }
+
+    //Get enable screenshot setting from properties file
+    private Boolean getEnableScreenshot() {
+        String screenshot = getPropertyValue("enable_screenshot");
+        logger.debug("enable_screenshot setting is " + screenshot);
+        if (screenshot.equalsIgnoreCase("true")){
+            return true;
+        } else { return false;}
+    }
+
+    //private method to retrieve property value from setup.properties
+    private String getPropertyValue(String property){
+        try{
             setupProp.load(new FileInputStream(propertiesPath));
         } catch (FileNotFoundException e){
             logger.info("the properties file does not exist - " + propertiesPath);
         } catch (IOException e){
             logger.info("the properties file needs to be checked - " + propertiesPath);
         }
-        return setupProp.getProperty("password");
+        return setupProp.getProperty(property);
     }
 
-    //Create selenium webdriver for required browser(chrome).
+    //Create selenium webdriver for required browser(specified in properties file).
+    //output - WebDriver - driver to run selenium tests
     public WebDriver setBrowserDriver(){
-//        System.setProperty("webdriver.gecko.driver", getToolsPath() + "\\geckodriver.exe");
-//        WebDriver driver = new FirefoxDriver();
-//        logger.info("Firefox browser driver created");
-
-        System.setProperty("webdriver.chrome.driver", getToolsPath() + "\\chromedriver.exe");
-        WebDriver driver = new ChromeDriver();
-        logger.info("Chrome browser driver created");
-
+        WebDriver driver;
+        if (getBrowser().equalsIgnoreCase("Firefox")) {
+            System.setProperty("webdriver.gecko.driver", getToolsPath() + "\\geckodriver.exe");
+            driver = new FirefoxDriver();
+            logger.debug("Firefox browser driver created");
+        } else {
+            System.setProperty("webdriver.chrome.driver", getToolsPath() + "\\chromedriver.exe");
+            driver = new ChromeDriver();
+            logger.debug("Chrome browser driver created");
+        }
         return driver;
     }
 
@@ -105,4 +122,24 @@ public class BaseSetup {
         return title;
     }
 
+    public void captureScreenshot(String fileName) {
+        String fullFileName, folder;
+        if (getEnableScreenshot()) {
+            int randomNum = ThreadLocalRandom.current().nextInt(1000, 9999 + 1);
+            fullFileName = "screenshot-" + fileName + randomNum + ".png";
+            folder = "target/surefire-reports/" + getBuildID() + "/";
+            try {
+                new File(folder).mkdirs(); // Ensure directory is there
+                FileOutputStream out = new FileOutputStream(folder + fullFileName);
+                out.write(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES));
+                out.close();
+                logger.info("Screenshot [{}] captured", fullFileName);
+            } catch (Exception e) {
+                logger.info("There was an issue in generating screenshot " + folder + fullFileName);
+                logger.info(e.toString());
+
+                // No need to crash the tests if the screenshot fails
+            }
+        }
+    }
 }

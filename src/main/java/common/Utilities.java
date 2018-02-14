@@ -13,15 +13,22 @@ public class Utilities {
 
     private static final Logger logger = LogManager.getLogger(Utilities.class);
 
+    //method to change date format
+    //parameters(1) - String - date to be changed
+    //parameters(2) - String - date format of date to be changed
+    //parameters(3) - String - date format required
+    //output - String - date in new format
     public static String changeDateFormat(String dateToChange, String formatFrom, String formatTo) throws ParseException {
-
         Date tempSittingDate = new SimpleDateFormat(formatFrom).parse(dateToChange);
-        dateToChange = new SimpleDateFormat(formatTo).format(tempSittingDate);
-
-        return dateToChange;
-
+        String updatedDate = new SimpleDateFormat(formatTo).format(tempSittingDate);
+        logger.debug("date is changed from [" + dateToChange  + "] to [" + updatedDate + "]");
+        return updatedDate;
     }
 
+    //method to add days
+    //parameters(1) - String - original date
+    //parameters(2) - int - number of days to be added
+    //output - String  - new date
     public static String addDays(String date, int days) throws ParseException {
         GregorianCalendar calendar = new GregorianCalendar();
         Date tempDate = new SimpleDateFormat("d-MMMM-yyyy").parse(date);
@@ -30,49 +37,26 @@ public class Utilities {
         return new SimpleDateFormat("d-MMMM-yyyy").format(calendar.getTime());
     }
 
+    //method to get day of month
+    //parameters - String - date
+    //output - String - day of month. there will not be any preceeding zeroes
     public static String getDayOfMonth(String date) throws ParseException {
-
         Date tempDate = new SimpleDateFormat("d-MMMM-yyyy").parse(date);
         return new SimpleDateFormat("d").format(tempDate);
-
     }
 
+    //method to get month
+    //parameters - String - date
+    //output - String - month
     public static String getMonthOfYear(String date) throws ParseException {
-
         Date tempDate = new SimpleDateFormat("d-MMMM-yyyy").parse(date);
         return new SimpleDateFormat("MMMM").format(tempDate);
-
     }
 
+    //static method to get current date in string format
+    //output - String - date in format d-MMMM-yyyy
     public static String getCurrentDate(){
         return new SimpleDateFormat("d-MMMM-yyyy").format(new Date());
-
     }
 
-    public static String getNextDayOfWeekPastGivenDate (String fromDate, String format, String dayOfWeek,
-                                                        String requiredFormat) throws ParseException {
-
-        fromDate = changeDateFormat(fromDate,format,"yyyy-MM-dd");
-
-        int year = Integer.parseInt(fromDate.split("-")[0]);
-        int month = Integer.parseInt(fromDate.split("-")[1])-1;
-        int day = Integer.parseInt(fromDate.split("-")[2]);
-
-        GregorianCalendar tempDate = new GregorianCalendar( year, month, day );
-
-        int dayOfWeekRequired =Calendar.MONDAY;
-        if (dayOfWeek.toUpperCase().equals("MONDAY")){
-            dayOfWeekRequired = Calendar.MONDAY;
-        } else if (dayOfWeek.toUpperCase().equals("TUESDAY")){
-            dayOfWeekRequired = Calendar.TUESDAY;
-        }else if (dayOfWeek.toUpperCase().equals("THURSDAY")){
-            dayOfWeekRequired = Calendar.THURSDAY;
-        }
-
-        while (tempDate.get(Calendar.DAY_OF_WEEK) != dayOfWeekRequired) {
-            tempDate.add(Calendar.DATE, 1);
-        }
-        return new SimpleDateFormat(requiredFormat).format(tempDate.getTime());
-
-    }
 }

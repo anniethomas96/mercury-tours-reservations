@@ -196,7 +196,7 @@ public class SelectFlightPage extends BaseSetup {
         String result;
         List< WebElement > rows = webtable.findElements(By.tagName("tr"));
         for (int rnum=0;rnum<rows.size();rnum++){
-            logger.debug("row number is " + rnum);
+//            logger.debug("row number is " + rnum);
             result = "";
             List<WebElement> columns=rows.get(rnum).findElements(By.tagName("td"));
             for (int cnum=0;cnum<columns.size();cnum++) {

@@ -3,15 +3,12 @@ package flights;
 import common.BaseSetup;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.TestRule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
 import pageobjects.*;
-
-import java.text.ParseException;
-
 import static common.Utilities.*;
 import static org.hamcrest.CoreMatchers.containsString;
 import static pageobjects.FlightSummaryPage.*;
@@ -22,12 +19,28 @@ import static pageobjects.FlightFinderPage.*;
 public class BookRoundTripTest extends BaseSetup {
 
     private static final Logger logger = LogManager.getLogger(BookRoundTripTest.class);
-    WebDriver driver;
+    private WebDriver driver;
     private HomePage mercuryHome;
     private FlightFinderPage flightPage;
     private SelectFlightPage selectFlight;
     private FlightSummaryPage flightSummary;
     private FlightConfirmationPage flightConfirmation;
+
+    @Rule
+    public TestRule watcher = new TestWatcher() {
+        protected void starting(Description description) {
+            logger.info("Starting test: " + description.getMethodName());
+        }
+        protected void failed(Throwable e , Description description) {
+            logger.error("Fail - Please check exception generated for test [{}]", description.getMethodName());
+            mercuryHome.captureScreenshot(description.getMethodName());
+            tearDown();
+        }
+        protected void succeeded(Description description) {
+            logger.info("Completed successfully test: " + description.getMethodName());
+            tearDown();
+        }
+    };
 
     @Before
     public void setUp() throws Exception {
@@ -39,12 +52,15 @@ public class BookRoundTripTest extends BaseSetup {
         flightConfirmation = new FlightConfirmationPage(driver);
     }
 
-    @After
-    public void tearDown() throws Exception {
-        //driver.quit();
+
+    public void tearDown() {
+        driver.quit();
     }
 
-    //Test to book a round trip, ticketless, first class flight for a single passenger
+    /**
+     * Test to book a round trip, ticketless, first class flight for a single passenger
+     * @throws Exception
+     */
     @Test
     public void BookRoundTrip_FirstClass_SinglePassenger_TicketlessTravel() throws Exception {
 
